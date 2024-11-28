@@ -22,5 +22,12 @@ services:
             - '../src/**/Repository/'
             - '../src/**/DependencyInjection/'
 
+    App\Infrastructure\Http\Controller\:
+        resource: '../src/Infrastructure/Http/Controller/'
+        tags: [ 'controller.service_arguments' ]
+
+    App\Infrastructure\Event\Subscriber\ApiEventSubscriber:
+        tags: { name: kernel.event_subscriber }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
