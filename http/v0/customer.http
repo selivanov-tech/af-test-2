@@ -1,0 +1,56 @@
+### POST create customer
+POST {{host}}/customer/create
+Content-Type: application/json
+
+{
+  "email": "test@test.test",
+  "phone": "1234567890",
+  "birthday": "1970-01-01",
+  "firstName": "John",
+  "lastName": "Doe",
+  "ssn": "111-22-3333",
+  "ficoScore": 300,
+  "address": {
+    "street": "test street",
+    "city": "test city",
+    "state": "CA",
+    "zip": "11111-4444"
+  }
+}
+
+> {%
+    client.assert(response.status === 200, "Response status is not 200");
+    client.assert(response.body.hasOwnProperty("id"), "Response doesn't have `id` property");
+%}
+
+### GET get customer
+GET {{host}}/customer/01937cd7-2262-7cdb-bbb9-96f380ec820a
+
+> {%
+    client.assert(response.status === 200, "Response status is not 200");
+    client.assert(response.body.hasOwnProperty("id"), "Response doesn't have `id` property");
+    client.assert(response.body.hasOwnProperty("email"), "Response doesn't have `email` property");
+    client.assert(response.body.hasOwnProperty("phone"), "Response doesn't have `phone` property");
+%}
+
+### PATCH update customer
+PATCH {{host}}/customer/01937cd7-2262-7cdb-bbb9-96f380ec820a
+Content-Type: application/json
+
+{
+  "ficoScore": 450,
+  "address": {
+    "street": "test street updated",
+    "city": "test city updated",
+    "state": "NY",
+    "zip": "11111-3333"
+  }
+}
+
+> {%
+    client.assert(response.status === 200, "Response status is not 200");
+    client.assert(response.body.hasOwnProperty("id"), "Response doesn't have `id` property");
+    client.assert(response.body.hasOwnProperty("email"), "Response doesn't have `email` property");
+    client.assert(response.body.hasOwnProperty("phone"), "Response doesn't have `phone` property");
+%}
+
