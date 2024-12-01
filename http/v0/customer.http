@@ -10,6 +10,7 @@ Content-Type: application/json
   "lastName": "Doe",
   "ssn": "111-22-3333",
   "ficoScore": 300,
+  "monthlyIncome": 4000,
   "address": {
     "street": "test street",
     "city": "test city",
@@ -39,6 +40,7 @@ Content-Type: application/json
 
 {
   "ficoScore": 450,
+  "monthlyIncome": 4500,
   "address": {
     "street": "test street updated",
     "city": "test city updated",

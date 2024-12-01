@@ -25,17 +25,18 @@ class Customer
     private string $firstName;
     #[ORM\Column(type: "string", length: 255)]
     private string $lastName;
-    #[ORM\Column(type: "datetime_immutable")]
+    #[ORM\Column(type: "date_immutable")]
     private DateTimeImmutable $birthday;
     #[ORM\Column(type: "integer", options: ["unsigned" => true])]
     private int $ficoScore;
-
     /**
      * Address fast solution to simplify,
      * better to store it as separate tables, and make relations
      */
     #[ORM\Column(type: "json")]
     private array $address;
+    #[ORM\Column(type: "integer", options: ['unsigned' => true])]
+    private int $monthlyIncome;
 
     public function getEmail(): string
     {
@@ -93,6 +94,11 @@ class Customer
         );
     }
 
+    public function getMonthlyIncome(): int
+    {
+        return $this->monthlyIncome;
+    }
+
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -143,6 +149,12 @@ class Customer
     public function setAddress(array $address): self
     {
         $this->address = $address;
+        return $this;
+    }
+
+    public function setMonthlyIncome(int $monthlyIncome): self
+    {
+        $this->monthlyIncome = $monthlyIncome;
         return $this;
     }
 }

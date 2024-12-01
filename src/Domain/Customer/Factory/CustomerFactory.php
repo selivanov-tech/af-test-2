@@ -25,7 +25,8 @@ class CustomerFactory
             ->setLastName($request->lastName)
             ->setSsn($request->ssn)
             ->setFicoScore($request->ficoScore)
-            ->setAddress($request->address->toArray());
+            ->setAddress($request->address->toArray())
+            ->setMonthlyIncome($request->monthlyIncome);
     }
 
     public function updateFromRequest(Customer $customer, CustomerUpdateRequest $request): void
@@ -60,6 +61,10 @@ class CustomerFactory
 
         if ($request->address !== null) {
             $customer->setAddress($request->address->toArray());
+        }
+
+        if ($request->monthlyIncome !== null) {
+            $customer->setMonthlyIncome($request->monthlyIncome);
         }
     }
 }

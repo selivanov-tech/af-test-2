@@ -2,17 +2,12 @@
 
 namespace App\Application\Exception\Customer;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
+use App\Application\Exception\Abstract\AbstractNotFoundException;
 
-class CustomerNotFoundException extends NotFoundHttpException
+class CustomerNotFoundException extends AbstractNotFoundException
 {
-    public function __construct(string $message = '', ?Throwable $previous = null, int $code = 0, array $headers = [])
+    protected function getEntityName(): string
     {
-        if (empty($message)) {
-            $message = 'Customer not found';
-        }
-
-        parent::__construct($message);
+        return 'Customer';
     }
 }

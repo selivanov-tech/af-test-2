@@ -31,7 +31,11 @@ class CustomerController
 
         $customer = $customerCreator->createCustomer($createDTO);
 
-        return new JsonResponse(['id' => $customer->getId()]);
+        // todo: wrap $data with new CustomerCreateResource($customer)
+        //  (which will store OpenApi attributes)
+        $data = ['id' => $customer->getId()];
+
+        return new JsonResponse($data);
     }
 
     #[Route('customer/{id}', name: 'edit customer', methods: 'PATCH')]
@@ -46,11 +50,13 @@ class CustomerController
 
         $errors = $validator->validate($updateDTO, groups: ['CustomerUpdateRequest']);
         if (count($errors) > 0) {
-            return new JsonResponse(['errors' => (string)$errors], 400);
+            return new JsonResponse(['errors' => $errors], 400);
         }
 
         $customer = $customerEditor->editCustomer($id, $updateDTO);
 
+        // todo: wrap $data with new CustomerEditResource($customer)
+        //  (which will store OpenApi attributes)
         $data = $serializer->serialize(
             data: $customer,
             format: 'json',
@@ -67,6 +73,8 @@ class CustomerController
         CustomerGetter $customerGetter,
         SerializerInterface $serializer
     ): JsonResponse {
+        // todo: wrap $data with new CustomerGetResource($result)
+        //  (which will store OpenApi attributes)
         $data = $serializer->serialize(
             data: $customerGetter->getCustomerById($id),
             format: 'json',
