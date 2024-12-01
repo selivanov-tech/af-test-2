@@ -2,16 +2,18 @@
 
 namespace App\Infrastructure\Event\Subscriber;
 
+use App\Infrastructure\Service\Exception\ExceptionTransformer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class ApiEventSubscriber implements EventSubscriberInterface
 {
+    public function __construct(
+        private readonly ExceptionTransformer $exceptionTransformer,
+    ) {
+    }
 
     public static function getSubscribedEvents(): array
     {
@@ -34,22 +36,9 @@ class ApiEventSubscriber implements EventSubscriberInterface
 
     public function transformExceptionToJson(ExceptionEvent $event): void
     {
-        $exception = $event->getThrowable();
-
-        $status = Response::HTTP_INTERNAL_SERVER_ERROR;
-        if ($exception instanceof HttpExceptionInterface) {
-            $status = $exception->getStatusCode();
-        }
-
-        $response = new JsonResponse(
-            data: [
-                'error' => $event->getThrowable()->getMessage(),
-                'details' => [/* todo */]
-            ],
-            status: $status
+        $event->setResponse(
+            $this->exceptionTransformer->transform($event->getThrowable())
         );
-
-        $event->setResponse($response);
     }
 
     public function logException(ExceptionEvent $event): void

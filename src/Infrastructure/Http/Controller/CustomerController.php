@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\UuidV7;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
@@ -26,7 +27,7 @@ class CustomerController
 
         $errors = $validator->validate($createDTO, groups: ['CustomerCreateRequest']);
         if (count($errors) > 0) {
-            return new JsonResponse(['errors' => (string)$errors], 400);
+            throw new ValidationFailedException($createDTO, $errors);
         }
 
         $customer = $customerCreator->createCustomer($createDTO);
@@ -50,7 +51,7 @@ class CustomerController
 
         $errors = $validator->validate($updateDTO, groups: ['CustomerUpdateRequest']);
         if (count($errors) > 0) {
-            return new JsonResponse(['errors' => $errors], 400);
+            throw new ValidationFailedException($updateDTO, $errors);
         }
 
         $customer = $customerEditor->editCustomer($id, $updateDTO);
