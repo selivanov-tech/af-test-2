@@ -2,7 +2,9 @@
 
 namespace App\Domain\Shared\Entity\Traits;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\UuidV7;
 
 trait SharedEntityUuidTrait
 {
@@ -15,5 +17,10 @@ trait SharedEntityUuidTrait
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return (new UuidV7($this->id))->getDateTime();
     }
 }
