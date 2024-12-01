@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.date_format: 'Y-m-d'
+    app.notification.channels:
+        - !php/enum App\Application\Enum\NotificationChannelEnum::EMAIL
+        - !php/enum App\Application\Enum\NotificationChannelEnum::SMS
 
 services:
     # default configuration for services in *this* file
@@ -33,6 +36,10 @@ services:
 
     App\Infrastructure\Event\Subscriber\ApiEventSubscriber:
         tags: { name: kernel.event_subscriber }
+
+    App\Infrastructure\Service\Notification\NotificationService:
+        arguments:
+            $channels: '%app.notification.channels%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
