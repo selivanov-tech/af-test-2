@@ -1,0 +1,12 @@
+import test.http
+import customer.http
+#import loan.http
+
+### run all test.http requests
+run test.http
+
+### run all customer.http requests
+run customer.http
+
+### run all loan.http requests
+#run loan.http

@@ -1,0 +1,16 @@
+services:
+  php:
+    container_name: ${CONTAINER_NAME}
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - .:/app
+      - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
+    ports:
+      # symfony server
+      - "8000:8000"
+      # xdebug
+      - "9003:9003"
+    environment:
+      SYMFONY_ENV: dev
